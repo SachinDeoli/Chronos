@@ -1,0 +1,6 @@
+<modules>
+    <module>shared</module>
+    <module>job-service</module>
+    <module>scheduler-service</module>
+    <module>worker-service</module>
+</modules>

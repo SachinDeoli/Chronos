@@ -1,0 +1,19 @@
+//Kafka(To verify the installation and test if its working)
+Step 1: List running containers
+docker ps
+Step 2: Start Kafka if not running
+docker-compose up -d
+Step 3: Check logs
+docker-compose logs -f
+Step 4: Go inside the container
+docker exec -it <container-name or container-id> bash
+Step 5: Create a topic
+kafka-topics.sh --create --topic test --bootstrap-server localhost:9092
+Step 6: List topics
+kafka-topics.sh --list --bootstrap-server localhost:9092
+Step 7: Describe topic
+kafka-topics.sh --describe --topic test --bootstrap-server localhost:9092
+Step 8: Produce messages
+kafka-console-producer.sh --topic test --bootstrap-server localhost:9092
+Step 9: Consume messages (different terminal)
+kafka-console-consumer.sh --topic test --bootstrap-server localhost:9092 --from-beginning
