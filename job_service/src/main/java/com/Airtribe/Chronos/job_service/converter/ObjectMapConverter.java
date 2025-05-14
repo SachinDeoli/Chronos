@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Converter
-public class MapToJsonConverter implements AttributeConverter<Map<String, Object>, String> {
+public class ObjectMapConverter implements AttributeConverter<Map<String, Object>, String> {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 

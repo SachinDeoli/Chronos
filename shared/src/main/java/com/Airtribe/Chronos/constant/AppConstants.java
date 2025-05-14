@@ -7,4 +7,7 @@ public class AppConstants {
     // Kafka topics
 //    public static final String SCHEDULED_JOBS_TOPIC = "scheduled-jobs";
     public static final String SCHEDULED_JOBS_TOPIC = "test-topic";
+
+    // Group ID for Kafka consumer
+    public static final String JOB_WORKER_GROUP_ID = "job-worker";
 }

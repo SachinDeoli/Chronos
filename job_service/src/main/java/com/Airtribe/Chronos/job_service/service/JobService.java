@@ -9,8 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -52,6 +56,18 @@ public class JobService {
             newJob.setCreatedAt(LocalDateTime.now());
             newJob.setData(job.getData());
 
+            if (job.getScheduleTime() != null) {
+                Map<String, LocalDateTime> nextRuns = new HashMap<>();
+                for (LocalTime time : job.getScheduleTime()) {
+                    LocalDateTime nextRun = LocalDateTime.of(LocalDate.now(), time);
+                    if (nextRun.isBefore(LocalDateTime.now())) {
+                        nextRun = nextRun.plusDays(1); // move to tomorrow
+                    }
+                    nextRuns.put(time.toString(), nextRun);
+                }
+                newJob.setNextRuns(nextRuns);
+            }
+
             jobRepository.save(newJob);
             redisTemplate.opsForHash().put(JOB_CACHE_KEY, newJob.getJobId(), newJob);
             return newJob;
@@ -68,9 +84,10 @@ public class JobService {
     }
 
     public Job updateJob(Long jobId, JobDTO job) {
-        Optional<Job> existingJob = jobRepository.findByJobId(jobId);
-        if (existingJob.isPresent()) {
-            Job updatedJob = existingJob.get();
+        Optional<Job> existingJobOpt = jobRepository.findByJobId(jobId);
+
+        if (existingJobOpt.isPresent()) {
+            Job updatedJob = existingJobOpt.get();
             updatedJob.setJobName(job.getJobName());
             updatedJob.setJobDescription(job.getJobDescription());
             updatedJob.setJobType(job.getJobType());
@@ -79,9 +96,26 @@ public class JobService {
             updatedJob.setData(job.getData());
             updatedJob.setJobStatus(JobStatus.PENDING);
 
+            // Handle nextRuns generation for recurring jobs
+            if (job.getScheduleTime() != null) {
+                Map<String, LocalDateTime> nextRuns = new HashMap<>();
+                for (LocalTime time : job.getScheduleTime()) {
+                    LocalDateTime nextRun = LocalDateTime.of(LocalDate.now(), time);
+                    if (nextRun.isBefore(LocalDateTime.now())) {
+                        nextRun = nextRun.plusDays(1);
+                    }
+                    nextRuns.put(time.toString(), nextRun);
+                }
+                updatedJob.setNextRuns(nextRuns);
+            } else {
+                // Not a recurring job: clear nextRuns
+                updatedJob.setNextRuns(null);
+            }
+
             jobRepository.save(updatedJob);
             redisTemplate.opsForHash().delete(JOB_CACHE_KEY, jobId);
             redisTemplate.opsForHash().put(JOB_CACHE_KEY, updatedJob.getJobId(), updatedJob);
+
             return updatedJob;
         } else {
             throw new RuntimeException("Job not found");

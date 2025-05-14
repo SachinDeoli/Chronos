@@ -1,6 +1,24 @@
-<modules>
-    <module>shared</module>
-    <module>job-service</module>
-    <module>scheduler-service</module>
-    <module>worker-service</module>
-</modules>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.airtribe.chronos</groupId>
+    <artifactId>chronos</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>shared</module>
+        <module>job_service</module>
+        <module>job_scheduler</module>
+        <module>job_worker</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Put versions here to centralize -->
+        </dependencies>
+    </dependencyManagement>
+</project>

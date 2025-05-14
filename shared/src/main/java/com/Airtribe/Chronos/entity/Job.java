@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -22,7 +24,8 @@ public class Job {
     private JobStatus jobStatus;
     private JobType jobType;
     private RecurrenceType recurrenceType;
-    private LocalDateTime scheduleTime;
+    private List<LocalTime> scheduleTime;
+    private Map<String, LocalDateTime> nextRuns;
     private LocalDateTime createdAt;
     private Map<String, Object> data;
 }

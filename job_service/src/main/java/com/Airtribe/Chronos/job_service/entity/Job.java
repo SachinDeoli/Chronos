@@ -1,6 +1,7 @@
 package com.Airtribe.Chronos.job_service.entity;
 
-import com.Airtribe.Chronos.job_service.converter.MapToJsonConverter;
+import com.Airtribe.Chronos.job_service.converter.LocalDateTimeMapConverter;
+import com.Airtribe.Chronos.job_service.converter.ObjectMapConverter;
 import com.Airtribe.Chronos.job_service.dto.JobStatus;
 import com.Airtribe.Chronos.job_service.dto.JobType;
 import com.Airtribe.Chronos.job_service.dto.RecurrenceType;
@@ -13,6 +14,8 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -43,14 +46,20 @@ public class Job {
     private RecurrenceType recurrenceType;
 
     @NotNull
-    private LocalDateTime scheduleTime;
+    private List<LocalTime> scheduleTime;
+
+    @NotNull
+    @Column(columnDefinition = "jsonb")
+    @Convert(converter = LocalDateTimeMapConverter.class)
+    @ColumnTransformer(write = "?::jsonb")
+    private Map<String, LocalDateTime> nextRuns;
 
     @NotNull
     private LocalDateTime createdAt;
 
     @NotNull
     @Column(columnDefinition = "jsonb")
-    @Convert(converter = MapToJsonConverter.class)
+    @Convert(converter = ObjectMapConverter.class)
     @ColumnTransformer(write = "?::jsonb")
     private Map<String, Object> data;
 

@@ -1,9 +1,8 @@
+com/Airtribe/Chronos/enums/JobStatus.class
 com/Airtribe/Chronos/entity/Job.class
-com/Airtribe/Chronos/dto/JobType.class
 com/Airtribe/Chronos/Main.class
+com/Airtribe/Chronos/enums/RecurrenceType.class
 com/Airtribe/Chronos/utils/RedisUtil.class
 com/Airtribe/Chronos/constant/AppConstants.class
-com/Airtribe/Chronos/dto/JobStatus.class
-com/Airtribe/Chronos/config/KafkaConfig.class
-com/Airtribe/Chronos/dto/RecurrenceType.class
 com/Airtribe/Chronos/config/RedisConfig.class
+com/Airtribe/Chronos/enums/JobType.class
