@@ -47,6 +47,7 @@ public class SchedulerService {
 
             if(nextRuns == null || nextRuns.isEmpty())
             {
+                //TO-DO Update the DB
                 redisTemplate.opsForHash().delete(AppConstants.JOB_CACHE_KEY, jobId);
                 continue;
             }
